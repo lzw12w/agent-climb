@@ -1,0 +1,10 @@
+{
+  "name": "seed-tools-context",
+  "description": "Example of non-prompt mutations: a merged edit+test tool, tool-output trimming in context, settle-time self-check, a skill.",
+  "model": "deepseek/deepseek-flash",
+  "thinking": "low",
+  "tools": ["read", "bash", "edit", "write", "write_and_test"],
+  "settings": { "compaction": { "enabled": true, "reserveTokens": 16384, "keepRecentTokens": 12000 } },
+  "parent": "baseline",
+  "mutation": "add write_and_test merged tool + context trimming + verify-before-finish"
+}

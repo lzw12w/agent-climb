@@ -1,0 +1,7 @@
+{
+  "name": "baseline",
+  "description": "Stock pi: default system prompt, built-in tools only.",
+  "model": "deepseek/deepseek-flash",
+  "thinking": "low",
+  "tools": ["read", "bash", "edit", "write"]
+}
