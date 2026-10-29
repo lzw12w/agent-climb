@@ -1,4 +1,4 @@
-# agent-climb
+# Agent Climb
 
 **Bring your benchmarks. Get back the strongest [pi](https://github.com/earendil-works/pi) agent we can climb to.**
 
