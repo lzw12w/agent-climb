@@ -4,7 +4,7 @@
 
 agent-climb takes one or more benchmarks you provide and uses frontier models to iteratively improve an agent built on the pi coding-agent framework, through a loop of run, score, analyze and revise. The output is an agent configuration tuned to get as close as possible to the ceiling of your benchmarks, ready for you to use.
 
-> Status: early design. Nothing here is implemented yet; this README describes the intended scope.
+> Status: early prototype. The full loop runs end to end on MBPP+ (see [first run report](docs/runs/mbppplus-real1.md)). APIs and formats may still change.
 
 ## How it works
 
@@ -36,13 +36,41 @@ Each iteration runs a benchmark with frontier models, which gets expensive fast.
 
 The climber edits what pi is designed to be extended with: system prompts, skills, tools and extension code. It does **not** modify pi's core. That keeps the delivered agent a normal pi setup you can run, read and maintain.
 
+## Quick start
+
+Requires Node 20+, Python 3 (for MBPP+), pi (`@earendil-works/pi-coding-agent`) on your PATH, and a model API key (the current proposer uses `DEEPSEEK_API_KEY`).
+
+```bash
+npm install
+npm test
+npx tsx src/cli.ts run --benchmark mbppplus --seed-config configs/baseline --budget-usd 1 --iterations 5 --run-dir runs/my-run
+```
+
+The run directory holds resumable state; rerun the same command to continue. A `report.md` with the score curve, lineage, diffs and costs is written there.
+
+## Project layout
+
+- `src/types.ts`, `src/split.ts`: benchmark interface, seeded optimization / held-out split, nested screening samples
+- `src/benchmarks/`: benchmark adapters (MBPP+); `src/examples/toy.ts`: a tiny JS benchmark
+- `src/local-test-scorer.ts`: scores a submission by running hidden tests in a temp dir (not sandboxed)
+- `src/agent-config.ts`: a candidate agent is a directory (`agent.json`, `SYSTEM.md`, `AGENTS.md`, `skills/`, `extensions/*.ts`) loaded by pi in isolation
+- `src/pi-runner.ts`: runs pi headless per task with budget caps, concurrency and traces
+- `src/climb/`: proposer, cheap candidate validation, screened evaluation, held-out acceptance, report
+- `docs/pi-extension-surface.md`: every pi extension point and whether it is a useful knob to climb
+
+The climber can change system prompts, AGENTS.md, skills, tool selection, new or merged tools, tool call / result interception, context and compaction handling, settle-time self-checks, and model / thinking settings.
+
 ## Roadmap
 
-- [ ] Benchmark interface (tasks + scorer) and optimization / held-out split
-- [ ] Baseline runner on pi
-- [ ] Climbing loop with budget cap and early stopping
-- [ ] Candidate screening on small samples
-- [ ] Final report: held-out scores, diffs and cost
+- [x] Benchmark interface (tasks + scorer) and optimization / held-out split
+- [x] Baseline runner on pi
+- [x] Climbing loop with budget cap and early stopping
+- [x] Candidate screening on small samples
+- [x] Final report: held-out scores, diffs and cost
+- [ ] Aider Polyglot adapter (benchmark with more headroom)
+- [ ] Larger held-out sets and repeated runs to reduce noise
+- [ ] Sandboxed scoring (docker) for untrusted code
+- [ ] Pluggable proposer models
 
 ## Related work
 
