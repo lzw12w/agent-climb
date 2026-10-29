@@ -1,0 +1,10 @@
+{
+  "name": "agent-climb",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": { "build": "tsc -p .", "typecheck": "tsc -p . --noEmit", "test": "vitest run" },
+  "devDependencies": { "typescript": "^5.6.0", "vitest": "^2.1.0", "@types/node": "^20.0.0" }
+}
