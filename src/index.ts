@@ -6,3 +6,4 @@ export * from "./examples/toy.js";
 export * from "./agent-config.js";
 export * from "./pi-runner.js";
 export * from "./benchmarks/mbppplus.js";
+export * from "./climb/index.js";
